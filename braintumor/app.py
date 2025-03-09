@@ -7,7 +7,7 @@ import cv2
 
 app = Flask(__name__, template_folder='templates')
 
-# Configure upload folder
+# upload folder
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
@@ -16,7 +16,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Load the brain tumor model
+# load model
 try:
     model = tf.keras.models.load_model('braintumor.h5')
     print("Model loaded successfully!")
@@ -72,13 +72,12 @@ def predict():
             
             prediction = model.predict(processed_image)
             
-            # Add debug printing
+            # debug
             print("Raw prediction output:", prediction)
             print("Shape of prediction:", prediction.shape)
             
             predicted_class = np.argmax(prediction[0])
             
-            # Add more debug printing
             print("Predicted class index:", predicted_class)
             print("Prediction probabilities:", prediction[0])
             
@@ -88,7 +87,6 @@ def predict():
             prediction_result = {
                 'prediction': result,
                 'confidence': round(confidence, 2),
-                # Add raw probabilities to the output for debugging
                 'probabilities': {
                     class_names[i]: float(prediction[0][i]) * 100 
                     for i in range(len(class_names))
